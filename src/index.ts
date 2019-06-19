@@ -1,2 +1,2 @@
-export * from "./ApiResource";
-export * from "./ApiRequest";
+export * from './ApiResource';
+export * from './ApiRequest';

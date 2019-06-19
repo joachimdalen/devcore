@@ -1,4 +1,4 @@
-import { isArray } from "util";
+import { isArray } from 'util';
 
 // Type to define single and array of T as a single type.
 export type SingleOrArray<T> = T | T[];
@@ -18,7 +18,7 @@ export abstract class ApiResource<T> {
    *
    * @param item item to transform
    */
-  transformItem(item: T): Object {
+  transformItem(item: T): {} {
     return item;
   }
 

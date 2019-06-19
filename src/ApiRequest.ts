@@ -2,8 +2,9 @@ import axios, {
   AxiosError,
   AxiosPromise,
   AxiosRequestConfig,
-  Method
-} from "axios";
+  Method,
+  AxiosResponse
+} from 'axios';
 
 export interface ApiRequestParam {
   key: string;
@@ -22,11 +23,11 @@ export class ApiRequest {
   // If the request should apply auth tokens
   private authenticated: boolean;
   // Additional data to pass to the request
-  private requestData: any;
+  private requestData?: object;
   // The public headers that should be passed with every resuest
   private publicHeaders = {
-    Accept: "application/json",
-    "Content-Type": "application/json"
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
   };
   constructor(
     endpoint: string,
@@ -34,7 +35,7 @@ export class ApiRequest {
     applyAuthToken: boolean,
     urlParams?: ApiRequestParam[],
     endpointParams?: ApiRequestParam[],
-    data?: any
+    data?: object
   ) {
     this.authenticated = applyAuthToken;
     this.endpoint = endpoint;
@@ -55,7 +56,7 @@ export class ApiRequest {
   _replaceEndpointKeys(): string {
     let endpoint = this.endpoint;
     if (!this.endpointParams) return this.endpoint;
-    this.endpointParams.forEach((param: ApiRequestParam) => {
+    this.endpointParams.forEach((param: ApiRequestParam): void => {
       endpoint = endpoint.replace(param.key, param.value.toString());
     });
     return endpoint;
@@ -69,9 +70,9 @@ export class ApiRequest {
    */
   _applyUrlParams(endpoint: string): string {
     if (!this.urlParams || !this.urlParams.length) return endpoint;
-    endpoint = endpoint + "?";
-    this.urlParams.forEach((urlParam: ApiRequestParam) => {
-      if (urlParam.value === (undefined || null || "")) return;
+    endpoint = endpoint + '?';
+    this.urlParams.forEach((urlParam: ApiRequestParam): void => {
+      if (urlParam.value === (undefined || null || '')) return;
       endpoint = endpoint + `${urlParam.key}=${urlParam.value}&`;
     });
     return endpoint.substr(0, endpoint.length - 1);
@@ -81,7 +82,7 @@ export class ApiRequest {
    * Apply authentication headers if the request requires
    * authentication.
    */
-  _applyAuthHeaders(): Object {
+  _applyAuthHeaders(): {} {
     if (!this.authenticated) return this.publicHeaders;
     /* 
     Uncomment the lines below and add your code for 
@@ -108,7 +109,9 @@ export class ApiRequest {
       data: JSON.stringify(this.requestData)
     };
     return axios(endpoint, axiosConfig)
-      .then(response => response.data)
+      .then((response: AxiosResponse) => {
+        return response.data;
+      })
       .catch((error: AxiosError) => {
         throw error;
       });
