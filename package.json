@@ -1,0 +1,32 @@
+{
+  "name": "@joachimdalen/devcore",
+  "version": "0.0.1",
+  "description": "A set of utilites I find myself using across projects",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha --reporter spec --require ts-node/register 'test/**/*.test.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joachimdalen/devcore.git"
+  },
+  "author": "Joachim Dalen <joachim@dalenapps.no> (https://joachimdalen.no)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/joachimdalen/devcore/issues"
+  },
+  "homepage": "https://github.com/joachimdalen/devcore#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.0.8",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  }
+}
