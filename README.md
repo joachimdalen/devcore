@@ -23,6 +23,8 @@ new ApiRequest(
 
 #### Examples
 
+This would perform a `DELETE` request to `http://localhost:8080/api/v1/users/1`
+
 ```ts
 const req = new ApiRequest(
   'http://localhost:8080/api/v1/users/:id',
@@ -34,7 +36,9 @@ const req = new ApiRequest(
 const res = req.performRequest();
 ```
 
-This would perform a `DELETE` request to `http://localhost:8080/api/v1/users/1`
+---
+
+This would perform a `GET` request to `http://localhost:8080/api/v1/users?name=adam`
 
 ```ts
 const req = new ApiRequest(
@@ -48,7 +52,9 @@ const req = new ApiRequest(
 const res = req.performRequest();
 ```
 
-This would perform a `GET` request to `http://localhost:8080/api/v1/users?name=adam`
+---
+
+This would perform a `POST` request to `http://localhost:8080/api/v1/users` with the body: `{ username: 'adam', password: 'password' }`
 
 ```ts
 const req = new ApiRequest(
@@ -65,5 +71,3 @@ const req = new ApiRequest(
 
 const res = req.performRequest();
 ```
-
-This would perform a `POST` request to `http://localhost:8080/api/v1/users` with the body: `{ username: 'adam', password: 'password' }`
