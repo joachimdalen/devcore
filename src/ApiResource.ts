@@ -74,4 +74,10 @@ export abstract class ApiResource<T> {
       return item;
     }
   }
+
+  mergeWhen(condition: boolean, data: object, source: object) {
+    if (condition) {
+      return Object.assign(source, data);
+    }
+  }
 }
