@@ -108,6 +108,7 @@ export class ApiRequest {
       headers: headers,
       data: JSON.stringify(this.requestData)
     };
+    console.log(endpoint);
     return axios(endpoint, axiosConfig)
       .then((response: AxiosResponse) => {
         return response.data;
@@ -117,3 +118,4 @@ export class ApiRequest {
       });
   }
 }
+export { axios }; // Exported for testing, remove in production

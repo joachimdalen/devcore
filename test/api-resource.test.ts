@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { ApiResource } from '../src';
+import { ApiResource } from '../src/api/ApiResource';
 const expect = chai.expect;
 
 interface TestModel {
