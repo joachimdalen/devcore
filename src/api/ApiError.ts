@@ -36,7 +36,7 @@ export class ApiError {
       }
     } else {
       this.statusText = 'An error occurred.';
-      this.message = 'An unknown error occurred.';
+      this.message = rawError.message || 'An unknown error occurred.';
       this.errorType = 'error';
       this.errors = [];
       this.statusCode = 500;
