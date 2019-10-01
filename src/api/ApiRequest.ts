@@ -10,39 +10,25 @@ export interface ApiRequestParam {
   key: string;
   value: string | number;
 }
+export interface ApiRequestConfig {
+  endpoint: string;
+  method: Method;
+  authenticated?: boolean;
+  urlParams?: ApiRequestParam[];
+  endpointParams?: ApiRequestParam[];
+  data?: object;
+}
 
 export class ApiRequest {
-  // The endpoint to call
-  private endpoint: string;
-  // Request method
-  private method: Method;
-  // Endpoint parameters
-  private endpointParams?: ApiRequestParam[];
-  // Url parameters
-  private urlParams?: ApiRequestParam[];
-  // If the request should apply auth tokens
-  private authenticated: boolean;
-  // Additional data to pass to the request
-  private requestData?: object;
+  private _config: ApiRequestConfig;
+
   // The public headers that should be passed with every resuest
   private publicHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json'
   };
-  constructor(
-    endpoint: string,
-    method: Method,
-    applyAuthToken: boolean,
-    urlParams?: ApiRequestParam[],
-    endpointParams?: ApiRequestParam[],
-    data?: object
-  ) {
-    this.authenticated = applyAuthToken;
-    this.endpoint = endpoint;
-    this.method = method;
-    if (endpointParams) this.endpointParams = endpointParams;
-    if (urlParams) this.urlParams = urlParams;
-    this.requestData = data;
+  constructor(config: ApiRequestConfig) {
+    this._config = config;
   }
 
   /**
@@ -54,9 +40,9 @@ export class ApiRequest {
    * following endpoint url to "/admin/users/1"
    */
   _replaceEndpointKeys(): string {
-    let endpoint = this.endpoint;
-    if (!this.endpointParams) return this.endpoint;
-    this.endpointParams.forEach((param: ApiRequestParam): void => {
+    let endpoint = this._config.endpoint;
+    if (!this._config.endpointParams) return this._config.endpoint;
+    this._config.endpointParams.forEach((param: ApiRequestParam): void => {
       endpoint = endpoint.replace(param.key, param.value.toString());
     });
     return endpoint;
@@ -69,9 +55,10 @@ export class ApiRequest {
    * @param endpoint Modified or original endpoint.
    */
   _applyUrlParams(endpoint: string): string {
-    if (!this.urlParams || !this.urlParams.length) return endpoint;
+    if (!this._config.urlParams || !this._config.urlParams.length)
+      return endpoint;
     endpoint = endpoint + '?';
-    this.urlParams.forEach((urlParam: ApiRequestParam): void => {
+    this._config.urlParams.forEach((urlParam: ApiRequestParam): void => {
       if (urlParam.value === (undefined || null || '')) return;
       endpoint = endpoint + `${urlParam.key}=${urlParam.value}&`;
     });
@@ -83,7 +70,7 @@ export class ApiRequest {
    * authentication.
    */
   _applyAuthHeaders(): {} {
-    if (!this.authenticated) return this.publicHeaders;
+    if (!this._config.authenticated) return this.publicHeaders;
     /* 
     Uncomment the lines below and add your code for 
     fetching the authentication tokens.
@@ -104,11 +91,10 @@ export class ApiRequest {
     endpoint = this._applyUrlParams(endpoint);
     const headers = this._applyAuthHeaders();
     const axiosConfig: AxiosRequestConfig = {
-      method: this.method,
+      method: this._config.method,
       headers: headers,
-      data: JSON.stringify(this.requestData)
+      data: this._config.data
     };
-    console.log(endpoint);
     return axios(endpoint, axiosConfig)
       .then((response: AxiosResponse) => {
         return response.data;
