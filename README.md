@@ -11,14 +11,14 @@ A set of utilities I find myself using across projects
 ApiRequest is a wrapper/helper class for generating axios requests. It supports adding endpoints, replace endpoint keys as well as adding query params.
 
 ```ts
-new ApiRequest(
+new ApiRequest({
   endpoint,
   method,
   applyAuthToken,
   urlParams,
   endpointParams,
   data
-);
+});
 ```
 
 #### Examples
